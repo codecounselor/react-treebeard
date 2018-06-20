@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import {StyleRoot} from 'radium';
-import {Treebeard, decorators} from '../src/index';
+import {Treebeard, decorators, TreeNode} from '../src/index';
 
 import data from './data';
 import styles from './styles';
@@ -44,6 +44,25 @@ class NodeViewer extends React.Component {
 NodeViewer.propTypes = {
     node: PropTypes.object
 };
+
+class MyNode extends TreeNode {
+
+	render() {
+		const {style} = this.props;
+		const decs = this.decorators();
+		const animations = this.animations();
+
+		console.log('dnd this puppy');
+		return (
+			<li ref={ref => this.topLevelRef = ref}
+				style={style.base}>
+				{this.renderHeader(decs, animations)}
+
+				{this.renderDrawer(decs, animations)}
+			</li>
+		);
+	}
+}
 
 class DemoTree extends React.Component {
     constructor() {
@@ -97,6 +116,7 @@ class DemoTree extends React.Component {
                 <div style={styles.component}>
                     <Treebeard data={stateData}
                                decorators={decorators}
+                               treeNodeComponent={MyNode}
                                onToggle={this.onToggle}/>
                 </div>
                 <div style={styles.component}>
