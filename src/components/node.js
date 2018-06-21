@@ -90,7 +90,8 @@ class TreeNode extends React.Component {
     }
 
     renderChildren(decorators) {
-        const {animations, decorators: propDecorators, node, style} = this.props;
+        const {animations, decorators: propDecorators, node, style, nodeComponent} = this.props;
+        const TreeNodeComponent = nodeComponent || TreeNode
 
         if (node.loading) {
             return this.renderLoading(decorators);
@@ -104,7 +105,8 @@ class TreeNode extends React.Component {
         return (
             <ul style={style.subtree}
                 ref={ref => this.subtreeRef = ref}>
-                {children.map((child, index) => <TreeNode {...this._eventBubbles()}
+                {children.map((child, index) => <TreeNodeComponent {...this._eventBubbles()}
+                                                          nodeComponent={TreeNodeComponent}
                                                           animations={animations}
                                                           decorators={propDecorators}
                                                           key={child.id || index}
